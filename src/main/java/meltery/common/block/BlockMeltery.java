@@ -154,7 +154,7 @@ public class BlockMeltery extends BlockDirectional {
 				if (stack.stackSize == 1)
 					tile.setProgress(0);
 				ItemStack copy = stack.copy();
-				copy.stackSize += 1;
+				copy.stackSize = 1;
 				ItemHandlerHelper.giveItemToPlayer(playerIn, copy);
 				stack.stackSize -= 1;
 				playerIn.swingArm(EnumHand.MAIN_HAND);

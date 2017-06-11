@@ -1,6 +1,7 @@
 package meltery.common;
 
 import com.google.common.collect.ImmutableSet;
+import meltery.Ported;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -86,11 +87,12 @@ public class MelteryHandler {
 	}
 
 	public static MelteryRecipe getMelteryRecipe(ItemStack stack) {
-		for (MelteryRecipe recipe : meltingRecipes) {
-			if (recipe.matches(stack)) {
-				return recipe;
+		if (!Ported.isEmpty(stack))
+			for (MelteryRecipe recipe : meltingRecipes) {
+				if (recipe.matches(stack)) {
+					return recipe;
+				}
 			}
-		}
 		return null;
 	}
 

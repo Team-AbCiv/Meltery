@@ -206,14 +206,11 @@ public class TileMeltery extends TileEntity implements ITickable {
         }
         public boolean isFull() {
             ItemStack stack = getStackInSlot(0);
-            return stack.stackSize == stack.getMaxStackSize();
+            return !Ported.isEmpty(stack) && stack.stackSize == stack.getMaxStackSize();
         }
 
         public boolean canInput(ItemStack stack) {
-            ItemStack slot = getStackInSlot(0);
-            if(slot.isItemEqual(stack))
-                return !isFull();
-            return isEmpty();
+	        return isEmpty() || getStackInSlot(0).isItemEqual(stack) && !isFull();
         }
     }
 }
