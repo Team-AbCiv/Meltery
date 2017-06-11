@@ -134,14 +134,13 @@ public class BlockMeltery extends BlockDirectional {
 		}
 
 		TileMeltery.SimpleStackHandler itemHandler = (TileMeltery.SimpleStackHandler) tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-		MelteryRecipe recipe = MelteryHandler.getMelteryRecipe(heldItem);
 
-		if (itemHandler.canInput(heldItem) && recipe != null && (tile.getInternalTank().getFluid() == null || recipe.output.isFluidEqual(tile.getInternalTank().getFluid()))) {
+		if (itemHandler.canInput(heldItem)) {
 			ItemStack insert = heldItem.copy();
 			insert.stackSize=1;
 			boolean isEmpty = Ported.isEmpty(itemHandler.getStackInSlot(0));
 			ItemStack result = ItemHandlerHelper.insertItem(itemHandler, insert, false);
-			if (result.stackSize < heldItem.stackSize) {
+			if (result == null || result.stackSize < heldItem.stackSize) {
 				worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEMFRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				heldItem.stackSize--;
 				if (isEmpty)

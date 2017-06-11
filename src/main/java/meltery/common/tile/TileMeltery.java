@@ -3,6 +3,7 @@ package meltery.common.tile;
 import meltery.Ported;
 import meltery.Utils;
 import meltery.common.MelteryHandler;
+import meltery.common.MelteryRecipe;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,7 @@ public class TileMeltery extends TileEntity implements ITickable {
     public static int MAX_FLUID = 9000;
 
     public TileMeltery() {
-        this.inventory = new SimpleStackHandler(1, this);
+        this.inventory = new SimpleStackHandler(1);
         this.tank = new FluidTankAnimated(MAX_FLUID,this);
     }
 
@@ -74,7 +75,7 @@ public class TileMeltery extends TileEntity implements ITickable {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         if (inventory == null)
-            inventory = new SimpleStackHandler(1, this);
+            inventory = new SimpleStackHandler(1);
         if (tank == null)
             tank = new FluidTankAnimated(MAX_FLUID,this);
         tank.readFromNBT(compound);
@@ -179,16 +180,14 @@ public class TileMeltery extends TileEntity implements ITickable {
     }
 
     public class SimpleStackHandler extends ItemStackHandler {
-        private TileMeltery tile;
 
-        public SimpleStackHandler(int size, TileMeltery tile) {
+        public SimpleStackHandler(int size) {
             super(size);
-            this.tile = tile;
         }
 
         @Override
         public void onContentsChanged(int slot) {
-            tile.markDirty();
+            markDirty();
         }
 
         @Override
@@ -210,7 +209,11 @@ public class TileMeltery extends TileEntity implements ITickable {
         }
 
         public boolean canInput(ItemStack stack) {
-	        return isEmpty() || getStackInSlot(0).isItemEqual(stack) && !isFull();
+	        ItemStack slot = getStackInSlot(0);
+	        MelteryRecipe recipe = MelteryHandler.getMelteryRecipe(stack);
+	        return (Ported.isEmpty(slot) || (slot.isItemEqual(stack) && !isFull()))
+			               && recipe != null
+			               && ((tank.getFluidAmount() <= 0) || recipe.output.isFluidEqual(tank.getFluid()));
         }
     }
 }
