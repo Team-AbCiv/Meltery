@@ -1,7 +1,7 @@
 [
   {
-    "modid": "meltery",
-    "name": "Meltery",
+    "modid": "meltery-abciv",
+    "name": "Meltery-AbCiv",
     "description": "Melts metals",
     "version": "${version}",
     "mcversion": "${mcversion}",
@@ -11,7 +11,7 @@
       "primetoxinz",
       "Gil"
     ],
-    "credits": "Gil for the idea and the textures",
+    "credits": "Gil for the idea and the textures, Glease for backporting to 1.10.2",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []
