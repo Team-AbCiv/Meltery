@@ -1,5 +1,6 @@
 package meltery.common.block;
 
+import mcjty.lib.tools.ItemStackTools;
 import meltery.common.MelteryHandler;
 import meltery.common.MelteryRecipe;
 import meltery.common.tile.TileMeltery;
@@ -122,10 +123,10 @@ public class BlockMeltery extends BlockDirectional {
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TileEntity te = worldIn.getTileEntity(pos);
         if (te == null) {
-            return super.getActualState(state, worldIn, pos);
+            return state;
         }
         TileMeltery meltery = (TileMeltery) te;
-        return super.getActualState(state, worldIn, pos).withProperty(ENABLED, meltery.isRunning());
+        return state.withProperty(ENABLED, meltery.isRunning());
     }
 
     @Override
@@ -140,26 +141,26 @@ public class BlockMeltery extends BlockDirectional {
         MelteryRecipe recipe = MelteryHandler.getMelteryRecipe(heldItem);
 
         if (itemHandler.canInput(heldItem) && recipe != null && (tile.getInternalTank().getFluid() == null || recipe.output.isFluidEqual(tile.getInternalTank().getFluid()))) {
-            ItemStack insert = heldItem.copy();
-            insert.setCount(1);
-            boolean isEmpty = itemHandler.getStackInSlot(0).isEmpty();
+            ItemStack insert = ItemStackTools.safeCopy(heldItem);
+            ItemStackTools.setStackSize(insert, 1);
+            boolean isEmpty = ItemStackTools.isEmpty(itemHandler.getStackInSlot(0));
             ItemStack result = ItemHandlerHelper.insertItem(itemHandler, insert, false);
-            if (result.getCount() < heldItem.getCount()) {
+            if (ItemStackTools.getStackSize(result) < ItemStackTools.getStackSize(heldItem)) {
                 worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEMFRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                heldItem.shrink(1);
+                ItemStackTools.incStackSize(heldItem, -1);
                 if (isEmpty)
                     tile.setProgress(0);
                 return true;
             }
         } else if (playerIn.isSneaking() && hand == EnumHand.MAIN_HAND) {
             ItemStack stack = itemHandler.getStackInSlot(0);
-            if(!stack.isEmpty()) {
-                if(stack.getCount() == 1)
+            if(ItemStackTools.isValid(stack)) {
+                if(ItemStackTools.getStackSize(stack) == 1)
                     tile.setProgress(0);
-                ItemStack copy = stack.copy();
-                copy.setCount(1);
+                ItemStack copy = ItemStackTools.safeCopy(stack);
+                ItemStackTools.setStackSize(copy, 1);
                 ItemHandlerHelper.giveItemToPlayer(playerIn,copy);
-                stack.shrink(1);
+                ItemStackTools.incStackSize(stack, -1);
                 playerIn.swingArm(EnumHand.MAIN_HAND);
             }
             return false;
@@ -205,15 +206,17 @@ public class BlockMeltery extends BlockDirectional {
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         TileMeltery tile = (TileMeltery) worldIn.getTileEntity(pos);
+        if (tile == null)
+            return; //Don't bother with null
         if (entityIn instanceof EntityItem) {
             TileMeltery.SimpleStackHandler itemHandler = (TileMeltery.SimpleStackHandler) tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
             ItemStack stack = ((EntityItem) entityIn).getEntityItem();
             MelteryRecipe recipe = MelteryHandler.getMelteryRecipe(stack);
 
             if (itemHandler.canInput(stack) && recipe != null && (tile.getInternalTank().getFluid() == null || recipe.output.isFluidEqual(tile.getInternalTank().getFluid()))) {
-                boolean isEmpty = itemHandler.getStackInSlot(0).isEmpty();
+                boolean isEmpty = ItemStackTools.isEmpty(itemHandler.getStackInSlot(0));
                 ItemStack result = ItemHandlerHelper.insertItem(itemHandler, stack, false);
-                if (result.isEmpty()) {
+                if (ItemStackTools.isEmpty(result)) {
                     entityIn.setDead();
                 } else {
                     ((EntityItem) entityIn).setEntityItemStack(result);

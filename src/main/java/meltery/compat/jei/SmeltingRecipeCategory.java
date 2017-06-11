@@ -31,6 +31,11 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipeWra
         background = guiHelper.createDrawable(background_loc, 0, 0, 53, 45, 0, 0, 0, 0);
     }
 
+    @Override
+    public String getModName() {
+        return Meltery.NAME;
+    }
+
     @Nonnull
     @Override
     public String getUid() {

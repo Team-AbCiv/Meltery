@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import slimeknights.mantle.util.ItemStackList;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.materials.Material;
@@ -95,9 +96,9 @@ public class MelteryHandler {
         return null;
     }
 
-
-    public static NonNullList<ItemStack> getOreNames(String prefix) {
-        NonNullList<ItemStack> list = NonNullList.create();
+    // Signature is changed to List<ItemStack> to ensure binary compatibility
+    public static List<ItemStack> getOreNames(String prefix) {
+        ItemStackList list = ItemStackList.create(); //In 1.11.2, ItemStackList inherits NonnullList<ItemStack>
         list.addAll(Arrays.stream(OreDictionary.getOreNames()).filter(n -> n.startsWith(prefix)).flatMap(n -> OreDictionary.getOres(n).stream()).collect(Collectors.toList()));
         return list;
     }

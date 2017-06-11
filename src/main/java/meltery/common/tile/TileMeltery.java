@@ -1,5 +1,6 @@
 package meltery.common.tile;
 
+import mcjty.lib.tools.ItemStackTools;
 import meltery.Utils;
 import meltery.common.MelteryHandler;
 import net.minecraft.block.material.Material;
@@ -127,7 +128,7 @@ public class TileMeltery extends TileEntity implements ITickable {
                     if ((tank.getCapacity() - tank.getFluidAmount()) >= tank.fill(fluidStack, false)) {
                         tank.fill(fluidStack, true);
                         world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0f, 0.75f);
-                        melt.shrink(1);
+                        ItemStackTools.incStackSize(melt, -1); // equivalent to ItemStack::shrink in 1.11 if amount is negative
                     } else {
                         world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 0.75f);
                     }
@@ -140,15 +141,12 @@ public class TileMeltery extends TileEntity implements ITickable {
             for (EnumFacing facing : EnumFacing.HORIZONTALS) {
                 BlockPos side = pos.offset(facing);
                 if (!world.isAirBlock(side)) {
-                    if (world.getTileEntity(side) != null) {
-                        TileEntity tile = world.getTileEntity(side);
-                        if (!(tile instanceof TileMeltery) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
-                            IFluidHandler fluidHandler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
-                            if (fluidHandler instanceof IFluidTank) {
-                                FluidUtil.tryFluidTransfer(fluidHandler, tank, 140, true);
-                            }
+                    TileEntity tile = world.getTileEntity(side);
+                    if (tile != null && !(tile instanceof TileMeltery) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
+                        IFluidHandler fluidHandler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
+                        if (fluidHandler instanceof IFluidTank) {
+                            FluidUtil.tryFluidTransfer(fluidHandler, tank, 140, true);
                         }
-
                     }
                 }
             }
@@ -201,18 +199,16 @@ public class TileMeltery extends TileEntity implements ITickable {
         }
 
         public boolean isEmpty() {
-            return getStackInSlot(0).isEmpty();
+            return ItemStackTools.isEmpty(getStackInSlot(0));
         }
         public boolean isFull() {
             ItemStack stack = getStackInSlot(0);
-            return stack.getCount() == stack.getMaxStackSize();
+            return ItemStackTools.getStackSize(stack) == stack.getMaxStackSize();
         }
 
         public boolean canInput(ItemStack stack) {
             ItemStack slot = getStackInSlot(0);
-            if(slot.isItemEqual(stack))
-                return !isFull();
-            return isEmpty();
+            return slot.isItemEqual(stack) ? !isFull() : isEmpty();
         }
     }
 }

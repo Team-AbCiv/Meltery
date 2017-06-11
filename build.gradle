@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "1.0.4-1.11.2"
 group = "meltery" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Meltery"
+archivesBaseName = "Meltery-AbCiv"
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
@@ -21,30 +21,27 @@ compileJava {
 }
 
 minecraft {
-    version = "1.11.2-13.20.0.2282"
+    version = "1.11.2-13.20.0.2314"
     runDir = "run"
-    mappings = "snapshot_20170323"
+    mappings = "snapshot_20170606"
     replace "%VERSION%":"${project.version}"
 }
 repositories {
     maven { url 'http://dvs1.progwml6.com/files/maven' }
     maven { url "http://blamejared.com/maven" }
     maven { url "http://maven.amadornes.com/" }
+    maven { url "http://maven.k-4u.nl" }
 }
 dependencies {
-    deobfCompile "mezz.jei:jei_1.11.2:+"
-	deobfCompile "slimeknights.mantle:Mantle:1.11.2+"
-	deobfCompile "slimeknights:TConstruct:1.11.2+"
+    compile "mezz.jei:jei_1.11.2:4.5.0.287:api"
+    deobfCompile "slimeknights.mantle:Mantle:1.11.2+"
+    deobfCompile "slimeknights:TConstruct:1.11.2+"
     deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
     deobfCompile "com.blamejared:MTLib:2.+"
     deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-108:deobf"
+    deobfCompile "com.github.mcjty:compatlayer:1.11.2-0.2.9"
     files("libs/*")
-}
-
-jar {
-    manifest {
-        attributes 'FMLAT': 'bwm_at.cfg'
-    }
+    runtime "mezz.jei:jei_1.11.2:4.5.0.287"
 }
 
 task deobfJar(type: Jar) {

@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
  */
 public class RenderMeltery extends TileEntitySpecialRenderer<TileMeltery> {
 
-    protected static Minecraft mc = Minecraft.getMinecraft();
+    //protected static Minecraft mc = Minecraft.getMinecraft();
 
     @Override
     public void renderTileEntityAt(@Nonnull TileMeltery tile, double x, double y, double z, float partialTicks, int destroyStage) {
