@@ -5,6 +5,9 @@ jdk:
 install: ./gradlew setupCIWorkspace -S
 script: ./gradlew build
 
+# use container to speed up builds
+sudo: false
+
 env:
   global:
     TERM=dumb
