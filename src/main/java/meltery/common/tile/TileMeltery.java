@@ -1,5 +1,6 @@
 package meltery.common.tile;
 
+import meltery.Ported;
 import meltery.Utils;
 import meltery.common.MelteryHandler;
 import net.minecraft.block.material.Material;
@@ -127,7 +128,7 @@ public class TileMeltery extends TileEntity implements ITickable {
                     if ((tank.getCapacity() - tank.getFluidAmount()) >= tank.fill(fluidStack, false)) {
                         tank.fill(fluidStack, true);
                         world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0f, 0.75f);
-                        melt.shrink(1);
+                        melt.stackSize--;
                     } else {
                         world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 0.75f);
                     }
@@ -201,11 +202,11 @@ public class TileMeltery extends TileEntity implements ITickable {
         }
 
         public boolean isEmpty() {
-            return getStackInSlot(0).isEmpty();
+            return Ported.isEmpty(getStackInSlot(0));
         }
         public boolean isFull() {
             ItemStack stack = getStackInSlot(0);
-            return stack.getCount() == stack.getMaxStackSize();
+            return stack.stackSize == stack.getMaxStackSize();
         }
 
         public boolean canInput(ItemStack stack) {

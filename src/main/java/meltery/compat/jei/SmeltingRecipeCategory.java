@@ -54,8 +54,17 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipeWra
 
     }
 
+	@Override
+	public void drawAnimations(Minecraft minecraft) {
+	}
 
-    @Override
+	@Override
+	public void setRecipe(IRecipeLayout recipeLayout, SmeltingRecipeWrapper recipeWrapper) {
+		// deprecated
+	}
+
+
+	@Override
     public void setRecipe(IRecipeLayout recipeLayout, SmeltingRecipeWrapper recipe, IIngredients ingredients) {
         IGuiItemStackGroup items = recipeLayout.getItemStacks();
         items.init(0, true, 6, 3);
