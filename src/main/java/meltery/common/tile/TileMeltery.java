@@ -93,7 +93,7 @@ public class TileMeltery extends TileEntity implements ITickable {
         IItemHandler inv = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inv != null) {
             for (int i = 0; i < inv.getSlots(); i++) {
-                Utils.ejectInventoryContents(world, pos, inv);
+                Utils.ejectInventoryContents(getWorld(), getPos(), inv);
             }
         }
     }
@@ -127,10 +127,10 @@ public class TileMeltery extends TileEntity implements ITickable {
                     FluidStack fluidStack = recipe.getResult();
                     if ((tank.getCapacity() - tank.getFluidAmount()) >= tank.fill(fluidStack, false)) {
                         tank.fill(fluidStack, true);
-                        world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0f, 0.75f);
+                        getWorld().playSound(null, getPos(), SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0f, 0.75f);
                         ItemStackTools.incStackSize(melt, -1); // equivalent to ItemStack::shrink in 1.11 if amount is negative
                     } else {
-                        world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 0.75f);
+                        getWorld().playSound(null, getPos(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 0.75f);
                     }
                     setProgress(0);
                 }
@@ -139,9 +139,9 @@ public class TileMeltery extends TileEntity implements ITickable {
         }
         if(tank.getFluidAmount() > 0) {
             for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-                BlockPos side = pos.offset(facing);
-                if (!world.isAirBlock(side)) {
-                    TileEntity tile = world.getTileEntity(side);
+                BlockPos side = getPos().offset(facing);
+                if (!this.getWorld().isAirBlock(side)) {
+                    TileEntity tile = getWorld().getTileEntity(side);
                     if (tile != null && !(tile instanceof TileMeltery) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
                         IFluidHandler fluidHandler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
                         if (fluidHandler instanceof IFluidTank) {
@@ -156,7 +156,7 @@ public class TileMeltery extends TileEntity implements ITickable {
 
     public void setProgress(int progress) {
         this.progress = progress;
-        world.markBlockRangeForRenderUpdate(pos,pos);
+        this.getWorld().markBlockRangeForRenderUpdate(pos,pos);
     }
 
     public void incrementProcress() {
