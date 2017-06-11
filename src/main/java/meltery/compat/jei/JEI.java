@@ -1,10 +1,10 @@
 package meltery.compat.jei;
 
+import mcjty.lib.CompatLayer;
 import meltery.Meltery;
 import meltery.common.MelteryHandler;
 import meltery.common.MelteryRecipe;
 import mezz.jei.api.BlankModPlugin;
-import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import net.minecraft.item.ItemStack;
@@ -15,14 +15,16 @@ import net.minecraft.item.ItemStack;
 @JEIPlugin
 public class JEI extends BlankModPlugin {
     public static final String MELTING_UID = "melting";
-    private static IGuiHelper helper;
     @Override
     public void register(IModRegistry registry) {
-        if(helper == null)
-            helper = registry.getJeiHelpers().getGuiHelper();
-        registry.addRecipeCategories(new SmeltingRecipeCategory(helper));
-        registry.handleRecipes(MelteryRecipe.class, SmeltingRecipeWrapper::new, MELTING_UID);
-        registry.addRecipes(MelteryHandler.meltingRecipes, MELTING_UID);
+        registry.addRecipeCategories(new SmeltingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        if (CompatLayer.isV11()) {
+            registry.handleRecipes(MelteryRecipe.class, SmeltingRecipeWrapper::new, MELTING_UID);
+            registry.addRecipes(MelteryHandler.meltingRecipes, MELTING_UID);
+        } else { // We assume it's 1.10
+            registry.addRecipeHandlers(new SmeltingRecipeHandler());
+            registry.addRecipes(MelteryHandler.meltingRecipes, MELTING_UID);
+        }
         registry.addRecipeCategoryCraftingItem(new ItemStack(Meltery.MELTERY),MELTING_UID);
     }
 }

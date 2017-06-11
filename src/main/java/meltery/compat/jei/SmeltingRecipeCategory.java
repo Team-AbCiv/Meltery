@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -78,7 +79,7 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipeWra
 
     @Override
     public List<String> getTooltipStrings(int mouseX, int mouseY) {
-        return ImmutableList.of();
+        return Collections.emptyList();
     }
 
     @Override

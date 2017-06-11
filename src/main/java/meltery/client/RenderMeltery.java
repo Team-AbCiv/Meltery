@@ -1,5 +1,6 @@
 package meltery.client;
 
+import mcjty.lib.tools.ItemStackTools;
 import meltery.common.tile.TileMeltery;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -59,19 +60,20 @@ public class RenderMeltery extends TileEntitySpecialRenderer<TileMeltery> {
         int brightness = meltery.getWorld().getCombinedLight(meltery.getPos(), 0);
 
         ItemStack stack = meltery.inventory.getStackInSlot(0);
-        boolean isItem = !(stack.getItem() instanceof ItemBlock);
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) (brightness % 0x10000) / 1f,
-                (float) (brightness / 0x10000) / 1f);
-        if (isItem) {
-            GlStateManager.rotate(-90, 1, 0, 0);
-        } else {
-            GlStateManager.scale(0.5,0.5,0.5);
-        }
-        IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, meltery.getWorld(), null);
-        model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
-        Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
-        if (isItem) {
-            GlStateManager.rotate(90, 1, 0, 0);
+        if (ItemStackTools.isValid(stack)) {
+            boolean isItem = !(stack.getItem() instanceof ItemBlock);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) (brightness % 0x10000) / 1f, (float) (brightness / 0x10000) / 1f);
+            if (isItem) {
+                GlStateManager.rotate(-90, 1, 0, 0);
+            } else {
+                GlStateManager.scale(0.5, 0.5, 0.5);
+            }
+            IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, meltery.getWorld(), null);
+            model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
+            Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+            if (isItem) {
+                GlStateManager.rotate(90, 1, 0, 0);
+            }
         }
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableCull();

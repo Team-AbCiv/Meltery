@@ -1,12 +1,12 @@
 package meltery.common;
 
 import com.google.common.collect.ImmutableSet;
+import mcjty.lib.tools.ItemStackTools;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
@@ -42,9 +42,9 @@ public class MelteryHandler {
 
     public static void registerOredictMelting(Fluid fluid, String ore) {
         ImmutableSet.Builder<Pair<List<ItemStack>, Integer>> builder = ImmutableSet.builder();
-        Pair<List<ItemStack>, Integer> nuggetOre = Pair.of(OreDictionary.getOres("nugget" + ore), Material.VALUE_Nugget);
-        Pair<List<ItemStack>, Integer> ingotOre = Pair.of(OreDictionary.getOres("ingot" + ore), Material.VALUE_Ingot);
-        Pair<List<ItemStack>, Integer> dustOre = Pair.of(OreDictionary.getOres("dust" + ore), Material.VALUE_Ingot);
+        Pair<List<ItemStack>, Integer> nuggetOre = Pair.of(ItemStackTools.getOres("nugget" + ore), Material.VALUE_Nugget);
+        Pair<List<ItemStack>, Integer> ingotOre = Pair.of(ItemStackTools.getOres("ingot" + ore), Material.VALUE_Ingot);
+        Pair<List<ItemStack>, Integer> dustOre = Pair.of(ItemStackTools.getOres("dust" + ore), Material.VALUE_Ingot);
 
         builder.add(nuggetOre, ingotOre, dustOre);
         Set<Pair<List<ItemStack>, Integer>> knownOres = builder.build();

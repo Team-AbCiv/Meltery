@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 /**
  * Created by tyler on 6/1/17.
  */
-@Mod(modid = Meltery.MODID, name = Meltery.NAME, version = Meltery.VERSION, dependencies = Meltery.DEPENDENCIES)
+@Mod(modid = Meltery.MODID, name = Meltery.NAME, version = Meltery.VERSION, dependencies = Meltery.DEPENDENCIES, acceptedMinecraftVersions = "[1.10.2, 1.11.2]")
 public class Meltery {
     public static final String MODID = "meltery";
     public static final String NAME = "Meltery";
