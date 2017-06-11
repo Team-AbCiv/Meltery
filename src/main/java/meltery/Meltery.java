@@ -1,15 +1,13 @@
 package meltery;
 
-import meltery.common.block.BlockMeltery;
 import meltery.common.CommonProxy;
 import meltery.common.MelteryHandler;
+import meltery.common.block.BlockMeltery;
 import meltery.common.tile.TileMeltery;
-import meltery.compat.minetweaker.Minetweaker;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -43,9 +41,9 @@ public class Meltery {
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
         MelteryHandler.init();
-        if (Loader.isModLoaded("crafttweaker")) {
-            Minetweaker.init();
-        }
+//        if (Loader.isModLoaded("crafttweaker")) {
+//            Minetweaker.init();
+//        }
 
     }
 
