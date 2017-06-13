@@ -37,14 +37,6 @@ dependencies {
 	deobfCompile "slimeknights:TConstruct:1.10.2-2.6.5.10:deobf"
     //deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
     //deobfCompile "com.blamejared:MTLib:2.+"
-    deobfCompile "blusunrize:ImmersiveEngineering:0.10-50-+:deobf"
-    files("libs/*")
-}
-
-jar {
-    manifest {
-        attributes 'FMLAT': 'bwm_at.cfg'
-    }
 }
 
 task deobfJar(type: Jar) {
