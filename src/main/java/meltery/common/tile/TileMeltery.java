@@ -17,7 +17,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -31,6 +30,7 @@ import slimeknights.tconstruct.library.fluid.FluidTankAnimated;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 
 /**
  * Created by tyler on 6/1/17.
@@ -142,10 +142,10 @@ public class TileMeltery extends TileEntity implements ITickable {
             for (EnumFacing facing : EnumFacing.HORIZONTALS) {
                 BlockPos side = pos.offset(facing);
                 if (!world.isAirBlock(side)) {
-                    if (world.getTileEntity(side) != null) {
-                        TileEntity tile = world.getTileEntity(side);
-                        if (!(tile instanceof TileMeltery) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
-                            IFluidHandler fluidHandler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
+	                TileEntity te = world.getTileEntity(side);
+	                if (te != null) {
+		                if (!(te instanceof TileMeltery) && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
+                            IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
                             if (fluidHandler instanceof IFluidTank) {
                                 FluidUtil.tryFluidTransfer(fluidHandler, tank, 140, true);
                             }
@@ -192,7 +192,7 @@ public class TileMeltery extends TileEntity implements ITickable {
 
         @Override
         public String toString() {
-            return stacks.toString();
+            return Arrays.toString(stacks);
         }
 
         @Override

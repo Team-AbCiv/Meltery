@@ -40,6 +40,8 @@ import java.util.List;
 /**
  * Created by tyler on 6/1/17.
  */
+
+@SuppressWarnings("deprecation")
 public class BlockMeltery extends BlockDirectional {
 	public static final DamageSource BURN = new DamageSource("meltery.burn");
 	public static final PropertyBool ENABLED = PropertyBool.create("enabled");
@@ -79,7 +81,6 @@ public class BlockMeltery extends BlockDirectional {
 		return true;
 	}
 
-	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileMeltery();
@@ -109,8 +110,9 @@ public class BlockMeltery extends BlockDirectional {
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		if (!worldIn.isRemote && worldIn.getTileEntity(pos) instanceof TileMeltery) {
-			((TileMeltery) worldIn.getTileEntity(pos)).onBreak();
+		TileEntity tileEntity = worldIn.getTileEntity(pos);
+		if (!worldIn.isRemote && tileEntity instanceof TileMeltery) {
+			((TileMeltery) tileEntity).onBreak();
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 		super.breakBlock(worldIn, pos, state);
@@ -198,6 +200,7 @@ public class BlockMeltery extends BlockDirectional {
 	@Override
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 		TileMeltery tile = (TileMeltery) worldIn.getTileEntity(pos);
+		assert tile != null;
 		if (entityIn instanceof EntityItem) {
 			TileMeltery.SimpleStackHandler itemHandler = (TileMeltery.SimpleStackHandler) tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 			ItemStack stack = ((EntityItem) entityIn).getEntityItem();

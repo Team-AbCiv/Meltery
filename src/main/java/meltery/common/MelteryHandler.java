@@ -39,6 +39,7 @@ public class MelteryHandler {
 		registerMelting(Blocks.CLAY, TinkerFluids.clay, Material.VALUE_BrickBlock);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void registerOredictMelting(Fluid fluid, String ore) {
 		ImmutableSet.Builder<Pair<List<ItemStack>, Integer>> builder = ImmutableSet.builder();
 		Pair<List<ItemStack>, Integer> nuggetOre = Pair.of(OreDictionary.getOres("nugget" + ore), Material.VALUE_Nugget);
