@@ -21,8 +21,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 @Mod(modid = Meltery.MODID, name = Meltery.NAME, version = Meltery.VERSION, dependencies = Meltery.DEPENDENCIES,
      acceptedMinecraftVersions = "1.10.2")
 public class Meltery {
-    public static final String MODID = "meltery-abciv";
-    public static final String NAME = "Meltery-AbCiv";
+    public static final String MODID = "meltery";
+    public static final String NAME = "Meltery";
     public static final String VERSION = "%VERSION%";
     public static final String DEPENDENCIES = "required-after:tconstruct";
 
