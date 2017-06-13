@@ -1,3 +1,4 @@
 tile.meltery.name=简易冶炼炉
 gui.jei.meltery.title=简易冶炼炉
 death.attack.meltery.burn=%s 被烧成了水
+tooltip.meltry=放在岩浆上方来预热
